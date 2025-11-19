@@ -27,4 +27,10 @@ router.put("/:id", async (req, res) => {
   res.json(project);
 });
 
+// Delete
+router.delete("/:id", async (req, res) => {
+  await Project.findByIdAndDelete(req.params.id);
+  res.json({ message: "Deleted" });
+});
+
 export default router;
