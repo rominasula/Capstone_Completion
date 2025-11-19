@@ -9,6 +9,12 @@ router.get("/", async (req, res) => {
   res.json(projects);
 });
 
+// Create new
+router.post("/", async (req, res) => {
+  const project = await Project.create(req.body);
+  res.json(project);
+});
+
 
 
 export default router;
