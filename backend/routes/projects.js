@@ -21,4 +21,10 @@ router.get("/:id", async (req, res) => {
   res.json(project);
 });
 
+// Update
+router.put("/:id", async (req, res) => {
+  const project = await Project.findByIdAndUpdate(req.params.id, req.body);
+  res.json(project);
+});
+
 export default router;
