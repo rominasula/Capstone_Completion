@@ -15,6 +15,10 @@ router.post("/", async (req, res) => {
   res.json(project);
 });
 
-
+// Get by ID
+router.get("/:id", async (req, res) => {
+  const project = await Project.findById(req.params.id);
+  res.json(project);
+});
 
 export default router;
