@@ -1,14 +1,20 @@
-import { createContext, useState, useEffect } from "react";
+import React, { createContext, useState } from "react";
 
 export const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+export const AuthProvider = ({ children }) => {
+  let storedUser = null;
 
-  useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) setUser(JSON.parse(savedUser));
-  }, []);
+  try {
+    const rawUser = localStorage.getItem("user");
+    // Only parse if it exists and is not the string "undefined"
+    storedUser = rawUser && rawUser !== "undefined" ? JSON.parse(rawUser) : null;
+  } catch (error) {
+    console.error("Failed to parse user from localStorage:", error);
+    storedUser = null;
+  }
+
+  const [user, setUser] = useState(storedUser);
 
   const login = (userData, token) => {
     localStorage.setItem("user", JSON.stringify(userData));
@@ -27,4 +33,4 @@ export function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
+};

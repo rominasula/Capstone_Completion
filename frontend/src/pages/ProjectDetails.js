@@ -10,7 +10,7 @@ export default function ProjectDetails() {
 
   const fetchData = async () => {
     const proj = await api.get(`/projects/${id}`);
-    const t = await api.get(`/projects/${id}/tasks`);
+    const t = await api.get(`/tasks/${id}`); // note: depending on your route, ensure this is correct
     setProject(proj.data);
     setTasks(t.data);
   };
@@ -20,13 +20,17 @@ export default function ProjectDetails() {
   }, [id]);
 
   const updateStatus = async (taskId, newStatus) => {
-    await api.put(`/tasks/update/${taskId}`, { status: newStatus });
+    await api.put(`/tasks/task/${taskId}`, { status: newStatus });
     fetchData();
   };
 
   return (
     <div className="kanban-page">
       <h2>{project.name}</h2>
+      <p>{project.description}</p>
+      <p>
+        Project Status: <strong>{project.status}</strong>
+      </p>
 
       <Link to={`/projects/${id}/new-task`} className="btn">
         + New Task
