@@ -16,10 +16,13 @@ export const registerUser = async (req, res) => {
 
     const user = await User.create({ username, email, password });
 
+    // FIX: Return { user, token }
     res.json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      },
       token: generateToken(user._id),
     });
   } catch (error) {
@@ -35,10 +38,13 @@ export const loginUser = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.comparePassword(password))) {
+      // FIX: Return { user, token }
       res.json({
-        _id: user._id,
-        username: user.username,
-        email: user.email,
+        user: {
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+        },
         token: generateToken(user._id),
       });
     } else {

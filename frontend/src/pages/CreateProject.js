@@ -12,12 +12,13 @@ export default function CreateProject() {
     e.preventDefault();
 
     try {
-      await api.post("/projects", {
+      const res = await api.post("/projects", {
         name,
         description,
       });
 
-      navigate("/projects");
+      // redirect to the new project details page
+      navigate(`/projects/${res.data._id}`);
     } catch (error) {
       console.error("Create project error:", error);
       alert("Failed to create project.");

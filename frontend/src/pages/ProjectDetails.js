@@ -5,11 +5,21 @@ import TaskForm from "./TaskForm";
 
 const ProjectDetails = () => {
   const { id } = useParams();
+
+  // Hooks MUST be at the top — NO conditions above this point
   const [project, setProject] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [invalidProject, setInvalidProject] = useState(false);
 
   const loadData = async () => {
+    // If the ID is literally "new", it's NOT a real project
+    if (id === "new") {
+      setInvalidProject(true);
+      setLoading(false);
+      return;
+    }
+
     try {
       const projectRes = await axios.get(`/projects/${id}`);
       const tasksRes = await axios.get(`/projects/${id}/tasks`);
@@ -18,6 +28,7 @@ const ProjectDetails = () => {
       setTasks(tasksRes.data);
     } catch (error) {
       console.error("Failed loading project or tasks:", error);
+      setInvalidProject(true);
     } finally {
       setLoading(false);
     }
@@ -27,18 +38,17 @@ const ProjectDetails = () => {
     loadData();
   }, [id]);
 
-  const handleTaskCreated = (newTask) => {
-    setTasks((prev) => [newTask, ...prev]);
-  };
-
+  // Loading state
   if (loading) return <p>Loading...</p>;
 
-  if (!project)
+  // Invalid or missing project
+  if (invalidProject || !project) {
     return (
       <p style={{ color: "red" }}>
-        Project not found. <Link to="/">Go back</Link>
+        Project not found. <Link to="/projects">Go back</Link>
       </p>
     );
+  }
 
   return (
     <div className="jira-shell">
@@ -47,7 +57,7 @@ const ProjectDetails = () => {
         <p className="muted">{project.description}</p>
       </div>
 
-      <TaskForm projectId={id} onTaskCreated={handleTaskCreated} />
+      <TaskForm projectId={id} onTaskCreated={(t) => setTasks([t, ...tasks])} />
 
       <h3>Tasks</h3>
 
@@ -64,7 +74,6 @@ const ProjectDetails = () => {
                 </span>
               </div>
               <p>{task.description}</p>
-
               <p className="muted">Priority: {task.priority}</p>
             </li>
           ))}
