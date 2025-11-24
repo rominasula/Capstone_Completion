@@ -12,14 +12,18 @@ export default function AddTask() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await api.post(`/projects/${id}/tasks`, {
-      title,
-      description,
-      priority: "medium",
-      status: "pending"
-    });
+    try {
+      await api.post(`/projects/${id}/tasks`, {
+        title,
+        description,
+        priority: "medium",
+        status: "pending"
+      });
 
-    navigate(`/projects/${id}`);
+      navigate(`/projects/${id}`);
+    } catch (error) {
+      console.error("Task creation error:", error);
+    }
   };
 
   return (
@@ -27,6 +31,7 @@ export default function AddTask() {
       <h2>Add Task</h2>
 
       <form onSubmit={handleSubmit}>
+
         <input
           type="text"
           placeholder="Task Title"

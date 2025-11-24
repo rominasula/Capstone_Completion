@@ -3,6 +3,7 @@ import {
   createProject,
   getProjects,
   getProjectById,
+  updateProject,
   deleteProject
 } from "../controllers/projectController.js";
 
@@ -21,7 +22,8 @@ const router = express.Router();
 router.post("/", protect, createProject);
 router.get("/", protect, getProjects);
 router.get("/:id", protect, getProjectById);
-router.delete("/:id", protect, deleteProject);  // NEW DELETE ROUTE
+router.put("/:id", protect, updateProject);      // <-- required for fixing EDIT PROJECT
+router.delete("/:id", protect, deleteProject);
 
 // TASK ROUTES (NESTED)
 router.post("/:id/tasks", protect, createTask);

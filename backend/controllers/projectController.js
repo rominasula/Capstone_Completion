@@ -56,6 +56,33 @@ export const getProjectById = async (req, res) => {
   }
 };
 
+// UPDATE PROJECT (Fixes the 404 in EditProject.js)
+export const updateProject = async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    // Ensure the logged-in user is the owner
+    if (project.owner.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    // Update fields
+    project.name = req.body.name || project.name;
+    project.description = req.body.description || project.description;
+
+    const updated = await project.save();
+
+    res.json(updated);
+  } catch (error) {
+    console.error("Update project error:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // DELETE PROJECT
 export const deleteProject = async (req, res) => {
   try {
