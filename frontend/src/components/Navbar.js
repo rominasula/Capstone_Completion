@@ -1,45 +1,44 @@
-import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import "../styles.css";
+import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const { user, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
+  let username = null;
 
-  const handleLogout = () => {
-    logout();
-    navigate("/");
+  // Safe JSON parsing
+  try {
+    const stored = localStorage.getItem("user");
+    if (stored && stored !== "undefined") {
+      const userObj = JSON.parse(stored);
+      username = userObj?.username || null;
+    }
+  } catch (err) {
+    console.error("Failed to read user from localStorage:", err);
+    username = null;
+  }
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/login";
   };
 
   return (
-    <header className="navbar-jira">
-      <div className="nav-left">
-        <Link to="/projects" className="logo-compact">
-          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
-            <g fill="none" stroke="currentColor" strokeWidth="1.4">
-              <circle cx="6" cy="12" r="3"></circle>
-              <circle cx="18" cy="6" r="3"></circle>
-              <circle cx="18" cy="18" r="3"></circle>
-            </g>
-          </svg>
-          <span>TaskFlow</span>
-        </Link>
-      </div>
+    <nav className="navbar-jira">
+      <Link to="/projects" className="logo-compact">TaskFlow</Link>
 
       <div className="nav-right">
-        {user ? (
+        {username ? (
           <>
-            <span className="nav-user">{user.username}</span>
-            <button className="btn ghost" onClick={handleLogout}>Logout</button>
+            <div className="nav-user">{username}</div>
+            <button onClick={logout} className="btn ghost">Logout</button>
           </>
         ) : (
           <>
-            <Link to="/" className="link-muted">Login</Link>
-            <Link to="/register" className="link-muted">Register</Link>
+            <Link to="/login" className="btn ghost">Login</Link>
+            <Link to="/register" className="btn ghost">Register</Link>
           </>
         )}
       </div>
-    </header>
+    </nav>
   );
 }

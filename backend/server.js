@@ -1,30 +1,21 @@
-import 'dotenv/config';
-import express from 'express';
-import cors from 'cors';
-import connectDB from './db.js';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import connectDB from "./db.js";
 
-// ROUTES
-import projectRoutes from "./routes/project.js";
-import taskRoutes from "./routes/taskRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import projectRoutes from "./routes/project.js";   // ONLY THIS
+
+dotenv.config();
+connectDB();
 
 const app = express();
-const port = process.env.PORT || 8080;
-
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
 
-// Test route
-app.get('/', (req, res) => {
-  res.json('Hello World! (from server)');
-});
-
-// Mount routes
-app.use("/api/projects", projectRoutes);
-app.use("/api/tasks", taskRoutes);
+// ROUTES
 app.use("/api/auth", authRoutes);
+app.use("/api/projects", projectRoutes);  // tasks handled inside this
 
-// Connect DB & start server
-connectDB().then(() => {
-  app.listen(port, () => console.log(`Server running on port: ${port}`));
-});
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));

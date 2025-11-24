@@ -2,17 +2,31 @@ import express from "express";
 import {
   createProject,
   getProjects,
-  updateProject,
-  deleteProject,
+  getProjectById
 } from "../controllers/projectController.js";
+
+import {
+  createTask,
+  getTasks,
+  updateTask,
+  deleteTask
+} from "../controllers/taskController.js";
+
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// All routes are protected
-router.get("/", protect, getProjects);
+// PROJECT ROUTES
 router.post("/", protect, createProject);
-router.put("/:id", protect, updateProject);
-router.delete("/:id", protect, deleteProject);
+router.get("/", protect, getProjects);
+router.get("/:id", protect, getProjectById);
+
+// TASK ROUTES (NESTED)
+router.post("/:id/tasks", protect, createTask);
+router.get("/:id/tasks", protect, getTasks);
+
+// UPDATE / DELETE A TASK
+router.put("/tasks/:taskId", protect, updateTask);
+router.delete("/tasks/:taskId", protect, deleteTask);
 
 export default router;

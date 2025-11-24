@@ -1,62 +1,23 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../api/axiosConfig";
-import ProjectCard from "../components/ProjectCard";
-import "../styles.css";
+import { Link } from "react-router-dom";
 
 export default function Projects() {
   const [projects, setProjects] = useState([]);
-  const [newProj, setNewProj] = useState({
-    name: "",
-    description: "",
-    status: "pending",
-  });
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     const load = async () => {
       try {
-        setLoading(true);
         const res = await api.get("/projects");
         setProjects(res.data);
       } catch (err) {
+        console.error(err);
         setError(err.response?.data?.message || "Failed to load projects");
-      } finally {
-        setLoading(false);
       }
     };
     load();
   }, []);
-
-  const createProject = async (e) => {
-    e.preventDefault();
-    try {
-      setError("");
-      const res = await api.post("/projects", newProj);
-      setProjects((prev) => [res.data, ...prev]);
-      setNewProj({ name: "", description: "", status: "pending" });
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to create project");
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await api.delete(`/projects/${id}`);
-      setProjects((prev) => prev.filter((p) => p._id !== id));
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to delete project");
-    }
-  };
-
-  const handleUpdate = async (id, updates) => {
-    try {
-      const res = await api.put(`/projects/${id}`, updates);
-      setProjects((prev) => prev.map((p) => (p._id === id ? res.data : p)));
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to update project");
-    }
-  };
 
   return (
     <div className="jira-shell">
@@ -66,60 +27,33 @@ export default function Projects() {
       </header>
 
       <section className="create-area card">
-        <form className="create-form" onSubmit={createProject}>
-          <div className="form-row">
-            <input
-              className="input"
-              placeholder="Project name"
-              value={newProj.name}
-              onChange={(e) => setNewProj({ ...newProj, name: e.target.value })}
-              required
-            />
-            <select
-              className="select-small"
-              value={newProj.status}
-              onChange={(e) => setNewProj({ ...newProj, status: e.target.value })}
-            >
-              <option value="pending">Pending</option>
-              <option value="in-progress">In Progress</option>
-              <option value="completed">Completed</option>
-            </select>
-          </div>
-
-          <div className="form-row">
-            <input
-              className="input"
-              placeholder="Short description"
-              value={newProj.description}
-              onChange={(e) => setNewProj({ ...newProj, description: e.target.value })}
-            />
-            <button className="btn primary">Create</button>
-          </div>
-        </form>
-
-        {error && <p className="error">{error}</p>}
+        <div className="row-between">
+          <Link to="/projects/new" className="btn primary">Create Project</Link>
+        </div>
       </section>
 
-      <main>
-        {loading ? (
-          <div className="grid-skeleton">
-            <div className="skeleton-card" />
-            <div className="skeleton-card" />
-            <div className="skeleton-card" />
+      {error && <div className="error">{error}</div>}
+
+      <section className="project-grid" style={{ marginTop: 18 }}>
+        {projects.map((p) => (
+          <div key={p._id} className="project-card card">
+            <div className={`accent ${p.status || "pending"}`} />
+            <div className="card-body">
+              <div className="card-header">
+                <h3 className="project-title">{p.name}</h3>
+                <div className={`status-badge ${p.status || "pending"}`}>{p.status}</div>
+              </div>
+
+              <p className="muted">{p.description}</p>
+
+              <div className="card-actions">
+                <Link className="link-btn" to={`/projects/${p._id}`}>Open</Link>
+                <Link className="link-btn" to={`/projects/${p._id}/edit`}>Edit</Link>
+              </div>
+            </div>
           </div>
-        ) : (
-          <div className="project-grid">
-            {projects.map((p) => (
-              <ProjectCard
-                key={p._id}
-                project={p}
-                onDelete={() => handleDelete(p._id)}
-                onUpdate={(updates) => handleUpdate(p._id, updates)}
-              />
-            ))}
-          </div>
-        )}
-      </main>
+        ))}
+      </section>
     </div>
   );
 }
