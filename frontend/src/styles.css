@@ -226,15 +226,25 @@
 }
 
 .delete-btn {
-  color: white;
   background: #e63946;
+  color: white;
   padding: 6px 12px;
-  border-radius: 6px;
+  border-radius: 5px;
   border: none;
   cursor: pointer;
-  transition: 0.2s ease;
 }
 
 .delete-btn:hover {
   background: #c91828;
+}
+
+.add-task-btn {
+  background: #0077cc;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.add-task-btn:hover {
+  background: #005fa3;
 }
