@@ -1,4 +1,5 @@
 import Project from "../models/Project.js";
+import Task from "../models/Task.js"; // <-- REQUIRED
 
 // CREATE PROJECT
 export const createProject = async (req, res) => {
@@ -56,7 +57,7 @@ export const getProjectById = async (req, res) => {
   }
 };
 
-// UPDATE PROJECT (Fixes the 404 in EditProject.js)
+// UPDATE PROJECT (name, description, status + auto task completion)
 export const updateProject = async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
@@ -70,13 +71,26 @@ export const updateProject = async (req, res) => {
       return res.status(401).json({ message: "Not authorized" });
     }
 
+    // Save old status
+    const previousStatus = project.status;
+
     // Update fields
     project.name = req.body.name || project.name;
     project.description = req.body.description || project.description;
+    project.status = req.body.status || project.status; // <--- VERY IMPORTANT
 
     const updated = await project.save();
 
+    // AUTO-MOVE ALL TASKS -> completed when project is completed
+    if (previousStatus !== "completed" && updated.status === "completed") {
+      await Task.updateMany(
+        { projectId: project._id },
+        { $set: { status: "completed" } }
+      );
+    }
+
     res.json(updated);
+
   } catch (error) {
     console.error("Update project error:", error);
     res.status(500).json({ message: error.message });
