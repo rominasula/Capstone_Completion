@@ -1,24 +1,27 @@
 📌 Dervishi_Romina_Tracking_App_Capstone
 
 A modern, Jira-inspired task and project management system built for my Capstone Project.
-Designed with a focus on clean UX, professional UI, and robust backend structure.
+Designed with a clean UX, professional UI, and a well-structured full-stack architecture.
 
 🚀 Project Overview
 
-Tracking App is a full-stack web application that helps users create, organize, and track projects and tasks.
-The system includes:
+Tracking App is a full-stack web application that allows users to create, organize, and track projects and tasks.
 
-User authentication (register & login)
+It includes:
 
-Project creation with statuses (Pending, In-Progress, Completed)
+🔐 User authentication (register & login)
 
-Task management inside each project
+📁 Project creation with statuses (Pending, In-Progress, Completed)
 
-Fully responsive, Jira-styled UI
+📝 Task management inside each project
 
-Modern, professional design suitable for production use
+🎨 Jira-inspired UI with responsive design
 
-This project is built as part of my Capstone Graduation Requirements.
+✔ Real-world CRUD operations
+
+📊 Kanban-style task workflow
+
+This project was built as part of my Capstone Graduation Requirements.
 
 🛠️ Tech Stack
 Frontend
@@ -39,30 +42,30 @@ Express.js
 
 MongoDB (Mongoose)
 
-JSON Web Token (JWT) authentication
+JWT Authentication
 
 BCrypt password hashing
 
 Environment
 
-.env file for secrets (JWT secret, database URI)
+.env file for secrets
 
-.env is ignored by Git according to security best practices
+.env is ignored in Git for security best practices
 
 🌟 Features
 🔐 Authentication
 
-Secure login & registration
+Secure login and registration
 
-JWT-based auth
+JWT-based protection
 
-User roles & ownership rules
+Owner-specific project access
 
 📁 Project Management
 
 Create / Edit / Delete projects
 
-Project status:
+Project statuses:
 
 🟡 Pending
 
@@ -70,19 +73,19 @@ Project status:
 
 🟢 Completed
 
-Jira-style project cards
+Status pills and animated cards
 
-Status pills, hover effects, animations
+Professional, Jira-like UI
 
 ✅ Task Management
 
 Create tasks inside a project
 
-Update task status
+Update task statuses
 
-Display tasks on a Kanban board
+Task statuses appear in a Kanban board
 
-Tasks categorized into:
+Columns include:
 
 To-Do
 
@@ -92,17 +95,18 @@ Done
 
 🎨 Jira-Styled UI
 
-Soft grey background
+Modern grey shell layout
 
-Professional card UI
+Clean project and task cards
 
-Subtle elevation & transitions
+Colored borders for status
 
-Colored borders for statuses
+Responsive design
 
-Fully responsive layout
+Smooth transitions & shadows
 
 📂 Project Structure
+
 Dervishi_Romina_Tracking_App_Capstone
 │
 ├── backend
@@ -119,43 +123,47 @@ Dervishi_Romina_Tracking_App_Capstone
 │   │   ├── components
 │   │   ├── pages
 │   │   ├── context
-│   │   ├── styles
-│   │   │     └── jira.css
+│   │   ├── styles.css
 │   │   └── App.js
 │   └── package.json
 │
 └── README.md
 
-⚙️ Installation & Setup
-1. Clone the repository
-git clone https://github.com/<your-username>/Dervishi_Romina_Tracking_App_Capstone.git
+
+📥 Clone the Repository
+
+To download and run this project locally, use:
+
+git clone https://github.com/RominaDervishi/Dervishi_Romina_Tracking_App_Capstone.git
+Then enter the folder:
+
 cd Dervishi_Romina_Tracking_App_Capstone
 
-2. Backend setup
+⚙️ Installation & Setup
+
+1. Backend Setup
+
 cd backend
 npm install
 
-
 Create a .env file:
 
-MONGO_URI=your_mongo_connection
+MONGO_URI=your_mongo_connection_string
 JWT_SECRET=your_secret_key
 PORT=8080
 
-
-Run the server:
-
+Run server:
 npm start
 
-3. Frontend setup
+2. Frontend Setup
 cd ../frontend
 npm install
 npm start
 
-
-The frontend runs at:
+Frontend runs at:
 👉 http://localhost:3000
-The backend runs at:
+
+Backend runs at:
 👉 http://localhost:8080
 
 🧪 Testing the App
@@ -166,32 +174,26 @@ Create your first project
 
 Add tasks
 
-Move tasks through the Kanban board
+Use the Kanban board
 
-Update project status
+Change project status
 
-Experience a polished Jira-like UI
+Enjoy a smooth Jira-like experience
 
 🎓 Capstone Compliance
+This project fulfills all capstone requirements:
 
-This project fulfills the capstone submission requirements:
-
-✔ Correct folder naming:
-Dervishi_Romina_Tracking_App_Capstone
-✔ Includes backend + frontend
-✔ Includes authentication
-✔ Real-world CRUD operations
-✔ Fully styled UI
+✔ Correct folder structure
+✔ Backend + Frontend
+✔ Authentication
+✔ CRUD operations
+✔ Styled UI
 ✔ Professional README
 
 📜 License
-
-This project was developed as an academic capstone and is not licensed for distribution without permission.
+This project was developed as an academic capstone and is not intended for redistribution without permission.
 
 🙋‍♀️ Author
 
 Romina Dervishi
 Tracking App — Capstone Project
-
-
-
